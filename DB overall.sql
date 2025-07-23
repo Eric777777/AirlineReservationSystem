@@ -1,19 +1,14 @@
 -- Create tables
--- REFRENCE TABLE
-
-CREATE TABLE Airlines(
+-- REFRENCE TABLECREATE TABLE Airlines(
     Airline_ID VARCHAR2(3) Primary Key,
     Airline_Name VARCHAR2(50),
-    Headquarters VARCHAR2(40)
-);
+    Headquarters VARCHAR2(40));
 CREATE TABLE Airports(
     Airport_ID VARCHAR2(4) PRIMARY KEY,
     Name VARCHAR2(50) NOT NULL UNIQUE,
     Country VARCHAR2(50) NOT NULL,
     City VARCHAR2(50) NOT NULL,
-    IATA_Code VARCHAR2(3) NOT NULL UNIQUE
-);
-
+    IATA_Code VARCHAR2(3) NOT NULL UNIQUE);
 CREATE TABLE Aircrafts(
     Aircraft_ID VARCHAR2(10) PRIMARY KEY,
     Model VARCHAR2(20) NOT NULL,
@@ -21,19 +16,16 @@ CREATE TABLE Aircrafts(
     CONSTRAINT chk_capacity CHECK (Capacity >= 0),
     Manufacturer VARCHAR2(50) NOT NULL
 );
-
 CREATE TABLE MANAGERS(
     MANAGER_ID NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     NAME VARCHAR2(50) NOT NULL
 );
-
 CREATE TABLE DEPARTMENTS(
     Department_ID NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     Name VARCHAR2(50) NOT NULL,
     MANAGER_ID NUMBER UNIQUE,
     FOREIGN KEY (MANAGER_ID) REFERENCES MANAGERS(MANAGER_ID)
 );
-
 --MAIN TABLE
 CREATE TABLE PASSENGERS(
     Passenger_id NUMBER GENERATED ALWAYS AS IDENTITY primary key,
@@ -46,7 +38,6 @@ CREATE TABLE PASSENGERS(
     Passport_No Varchar2(15) not null unique,
     Nationality Varchar2(20) not null
 );
-
 Create table Flights(
     Flight_Id VARCHAR2(8) primary key,
     Airline_Id VARCHAR2(3),
@@ -64,7 +55,6 @@ PARTITION BY RANGE (Departure_Date) (
     PARTITION f2025 VALUES LESS THAN (TO_DATE('01-JAN-2025','DD-MON-YYYY')),
     PARTITION fmax VALUES LESS THAN (MAXVALUE)
 );
-
 create table Bookings(
     Booking_id NUMBER GENERATED ALWAYS AS IDENTITY primary key,
     Passenger_id Number,
@@ -78,7 +68,6 @@ create table Bookings(
     Foreign Key (Passenger_id) REFERENCES PASSENGERS(Passenger_id),
     Foreign Key (Flight_Id) REFERENCES Flights(Flight_Id)
 );
-
 create table Staff(
     Staff_Id NUMBER GENERATED ALWAYS AS IDENTITY primary key,
     Name Varchar2(30) not null,
@@ -90,7 +79,6 @@ create table Staff(
     CONSTRAINT chk_salary CHECK (salary > 0),
     Foreign Key (Department_Id) REFERENCES Departments(Department_Id)
 );
- 
 create table Payments(
     Payment_Id NUMBER GENERATED ALWAYS AS IDENTITY primary key,
     Booking_id NUMBER,
@@ -106,7 +94,6 @@ PARTITION BY RANGE (Payment_Date) (
     PARTITION p2025 VALUES LESS THAN (TO_DATE('01-JAN-2025','DD-MON-YYYY')),
     PARTITION pmax VALUES LESS THAN (MAXVALUE)
 );
-
 create table Check_In(
     CheckIn_id NUMBER GENERATED ALWAYS AS IDENTITY primary key,
     Passenger_Id NUMBER,
@@ -117,9 +104,6 @@ create table Check_In(
     foreign key (Passenger_Id) references PASSENGERS(Passenger_id),
     foreign key (Flight_Id) references Flights(Flight_Id)
 );
-
--- Data Entry
---INSERTION FOR ALL TABLE
 INSERT INTO Airlines (
     Airline_ID
     ,Airline_Name
@@ -141,8 +125,6 @@ VALUES
     ('9E', 'Endeavor Air', 'Minneapolis, Minnesota'),
     ('YX', 'Republic Airways', 'Indianapolis, Indiana'),
     ('QX', 'Horizon Air', 'Seattle, Washington');
-
-
 INSERT INTO Airports (
     Airport_ID
     ,Name
@@ -166,8 +148,6 @@ VALUES
     ('BOS1', 'Logan International Airport', 'United States', 'Boston', 'BOS'),
     ('MSP1', 'Minneapolis-St. Paul International Airport', 'United States', 'Minneapolis', 'MSP'),
     ('DTW1', 'Detroit Metropolitan Wayne County Airport', 'United States', 'Detroit', 'DTW');
-
-
 INSERT INTO Aircrafts (
     Aircraft_ID
     ,Model
@@ -190,8 +170,6 @@ VALUES
     ('ATR-72', '72-600', 78, 'ATR'),
     ('Q400-DH', '8-Q400', 86, 'Bombardier'),
     ('MD80-88', 'MD-80', 172, 'McDonnell Douglas');
-
-
 INSERT INTO Managers (Name) 
 VALUES 
     ('John Smith'),
@@ -209,8 +187,6 @@ VALUES
     ('Daniel Thompson'),
     ('Ashley Moore'),
     ('Kevin Jackson');
-
-
 INSERT INTO Departments (
     Name
     ,Manager_ID
@@ -231,8 +207,6 @@ VALUES
     ('Reservations', 13),
     ('Quality Assurance', 14),
     ('Training', 15);
-
-
 INSERT INTO Passengers (
     First_Name
     ,Last_Name
@@ -259,8 +233,6 @@ VALUES
     ('Charles', 'White', DATE '1984-12-05', 'Male', 5553579246, 'charles.white@email.com', 'US345678902', 'American'),
     ('Nancy', 'Harris', DATE '1990-03-19', 'Female', 5554680357, 'nancy.harris@email.com', 'UK456789013', 'British'),
     ('Thomas', 'Clark', DATE '1987-07-16', 'Male', 5555791468, 'thomas.clark@email.com', 'US567890124', 'American');
-
-
 INSERT INTO Flights (
     Flight_Id
     ,Airline_Id
@@ -287,8 +259,6 @@ VALUES
     ('9E1313', '9E', 'McCarran International Airport', 'George Bush Intercontinental Airport', DATE '2024-12-27', DATE '2024-12-27', 'ATR-72', 'Scheduled'),
     ('YX1414', 'YX', 'Orlando International Airport', 'Logan International Airport', DATE '2024-12-28', DATE '2024-12-28', 'Q400-DH', 'Scheduled'),
     ('QX1515', 'QX', 'Minneapolis-St. Paul International Airport', 'Detroit Metropolitan Wayne County Airport', DATE '2024-12-29', DATE '2024-12-29', 'MD80-88', 'Scheduled');
-
-
 INSERT INTO Bookings (
     Passenger_ID
     ,Flight_ID
@@ -314,8 +284,6 @@ VALUES
     (13, 'YX1414', DATE '2024-12-13', '4F', 'Business', 720.00, 'Confirmed'),
     (14, 'QX1515', DATE '2024-12-14', '19A', 'Economy', 350.00, 'Confirmed'),
     (15, '9E1313', DATE '2024-12-15', '2B', 'First Class', 1100.00, 'Confirmed');
-
-
 INSERT INTO Staff (
     Name,
     Role,
@@ -340,8 +308,6 @@ VALUES
     ('Mia Thompson', 'Reservations', 13, 5553030303, DATE '2021-01-20', 36000.00),
     ('Nick Rodriguez', 'Quality Ctrl', 14, 5554040404, DATE '2018-10-05', 47000.00),
     ('Olivia Lee', 'Trainer', 15, 5555050505, DATE '2020-03-12', 51000.00);
-
-
 INSERT INTO Payments (
     Booking_ID
     , Amount_Paid
@@ -365,8 +331,6 @@ VALUES
     (13, 720.00, DATE '2024-12-13', 'Online', 'Confirmed'),
     (14, 350.00, DATE '2024-12-14', 'Online', 'Confirmed'),
     (15, 1100.00, DATE '2024-12-15', 'Cash', 'Confirmed');
-
-
 INSERT INTO Check_In (
     Passenger_ID
     , Flight_ID
@@ -389,9 +353,7 @@ VALUES
     (13, 'YX1414', TIMESTAMP '2024-12-27 11:00:00', 24.15),
     (14, 'QX1515', TIMESTAMP '2024-12-28 07:15:00', 16.55),
     (15, '9E1313', TIMESTAMP '2024-12-29 08:50:00', 23.70);
-
-
--- Main Queries
+- Main Queries
 --1> List all confirmed bookings for a given passenger.
 SELECT 
     B.Booking_ID,
@@ -408,8 +370,7 @@ JOIN
     Flights F ON B.Flight_ID = F.Flight_ID
 WHERE 
     B.Passenger_ID = :passenger_id
-    AND B.Status = 'Confirmed';
-    
+    AND B.Status = 'Confirmed'; 
 SELECT 
   Booking_ID,
   Passenger_ID,
@@ -421,10 +382,6 @@ SELECT
   Booking_Date
 FROM Bookings
 WHERE Status = 'Confirmed' AND Passenger_ID = 9;
-
-
-
-
 --2> Show flight schedules with available seats per route.
 SELECT 
     F.Flight_ID,
@@ -455,12 +412,8 @@ GROUP BY
     F.Departure_Date, F.Arrival_Date, AC.Model, AC.Capacity
 ORDER BY 
     F.Departure_Date;
-
-
-
 --3> Identify flights that have been cancelled or delayed.
 -- updating date to not to trigger the update_flight)status _tigger
-
 UPDATE Flights
 SET 
     Departure_Date = TRUNC(SYSDATE) + 1,
@@ -469,8 +422,6 @@ WHERE
     Flight_ID IN ('DL2002', 'F97007', 'WN4004', 'SY1010');
 
 select * from flights;
-
-
 -- upadate status to add answer in query
 UPDATE Flights
 SET Flight_Status = 'Cancelled'
@@ -478,7 +429,6 @@ WHERE Flight_ID IN ('DL2002', 'F97007');
 UPDATE Flights
 SET Flight_Status = 'Delayed'
 WHERE Flight_ID IN ('WN4004', 'SY1010'); 
-
 --actual query
 SELECT 
     Flight_ID,
@@ -494,25 +444,17 @@ WHERE
     Flight_Status IN ('Cancelled', 'Delayed')
 ORDER BY 
     Departure_Date;
-
-
-
-
 --4> Retrieve staff hired in the past year sorted by department.
 --Modifying data to show 
 UPDATE Staff
 SET Hire_Date = TRUNC(SYSDATE) - 30  
 WHERE Staff_Id = 1;
-
 UPDATE Staff
 SET Hire_Date = TRUNC(SYSDATE) - 60 
 WHERE Staff_Id = 5;
-
 UPDATE Staff
 SET Hire_Date = TRUNC(SYSDATE) - 90  
 WHERE Staff_Id = 10;
-
-
 --Actual Query
 SELECT 
     S.Staff_Id,
@@ -528,9 +470,6 @@ WHERE
     S.Hire_Date >= ADD_MONTHS(TRUNC(SYSDATE), -12)
 ORDER BY 
     D.Name;
-
-
-
 --5> Show passengers who haven't checked in for upcoming flights.
 INSERT INTO Passengers (
     First_Name, Last_Name, DOB, Gender, Contact, Email, Passport_No, Nationality
@@ -538,7 +477,6 @@ INSERT INTO Passengers (
     ('Ethan', 'Moore', DATE '1991-04-17', 'Male', '5556060606', 'ethan.moore@email.com', 'US606060601', 'American'),
     ('Sophia', 'Green', DATE '1988-12-09', 'Female', '5557070707', 'sophia.green@email.com', 'US707070702', 'American'),
     ('Liam', 'Scott', DATE '1993-06-22', 'Male', '5558080808', 'liam.scott@email.com', 'US808080803', 'Canadian');
-
 select * from bookings;
 INSERT INTO Bookings (
     Passenger_ID, Flight_ID, Booking_Date, Seat_No, Class, Price, Status
@@ -546,7 +484,6 @@ INSERT INTO Bookings (
     (21, 'AA1001', TRUNC(SYSDATE), '23A', 'Economy', 475.00, 'Confirmed'),
     (22, 'DL2002', TRUNC(SYSDATE), '19C', 'Business', 980.00, 'Confirmed'),
     (23, 'SY1010', TRUNC(SYSDATE), '7B', 'Economy', 500.00, 'Confirmed');
-
 -- Actual query 
 SELECT 
     P.Passenger_Id,
@@ -568,10 +505,6 @@ WHERE
     AND B.Status = 'Confirmed'
 ORDER BY 
     F.Departure_Date;
-
-
-
-
 --6> Find top 5 busiest airports based on departure frequency.
 SELECT 
     Departure_Airport,
@@ -583,9 +516,6 @@ GROUP BY
 ORDER BY 
     Departure_Count DESC
 FETCH FIRST 5 ROWS ONLY; 
-
-
-
 --7> Display payment summary for a given month (total revenue, mode distribution).
 SELECT 
     TO_CHAR(Payment_Date, 'YYYY-MM') AS Month,
@@ -600,9 +530,6 @@ WHERE
     AND Status = 'Confirmed'
 GROUP BY 
     TO_CHAR(Payment_Date, 'YYYY-MM');
-
-
-
 -- List aircrafts used most frequently across all flights.
 SELECT 
     F.Aircraft_ID,
@@ -617,8 +544,6 @@ GROUP BY
     F.Aircraft_ID, A.Model, A.Manufacturer
 ORDER BY 
     Usage_Count DESC;
-
-
 --9> Retrieve bookings where the payment is still pending.
 --insert for pending status
 INSERT INTO Payments (
@@ -648,14 +573,11 @@ WHERE
     Pay.Status = 'Pending'
 ORDER BY 
     B.Booking_Date;
-
-
 -- Identify flights with overbooked status (passengers exceed capacity).
 --Change capacity of aircaft to check the query for overbooked
 UPDATE Aircrafts
 SET Capacity = 0
 WHERE AIRCRAFT_ID = 'B737-800';
-
 --Actual query
 SELECT 
     F.Flight_ID,
@@ -680,8 +602,6 @@ HAVING
     COUNT(B.Booking_ID) > AC.Capacity
 ORDER BY 
     Excess_Passengers DESC;
-
-
 -- Main PL/SQL, functions, Triggers, Exception Handling
 --Procedures & Functions
 --1> Procedure to assign a seat and confirm booking.
@@ -701,38 +621,30 @@ BEGIN
     SELECT COUNT(*) INTO Existing_Count
     FROM Flights
     WHERE Flight_ID = p_flight_id;
-
     IF Existing_Count = 0 THEN
         RAISE_APPLICATION_ERROR(-20001, 'Flight ID Not Found');
     END IF;
-
     IF p_price <= 0 THEN
         RAISE_APPLICATION_ERROR(-20002, 'Invalid price amount. ');
     END IF;
-
     SELECT Departure_Date INTO p_departure_date
     FROM Flights
     WHERE Flight_ID = p_flight_id;
-
     IF p_departure_date < SYSDATE THEN
         RAISE_APPLICATION_ERROR(-20003, 'Cannot book seat: Flight has already departed.');
     END IF;
-
     SELECT COUNT(*) INTO p_seat_taken
     FROM Bookings
     WHERE Flight_ID = p_flight_id
       AND Seat_no = p_seat_no;
-
     IF p_seat_taken > 0 THEN
         SELECT Booking_ID INTO p_booking_id
         FROM Bookings
         WHERE Flight_ID = p_flight_id
           AND Seat_no = p_seat_no;
-
         UPDATE Bookings
         SET Status = 'Pending'
         WHERE Booking_ID = p_booking_id;
-
         DBMS_OUTPUT.PUT_LINE('Seat already assigned. Booking status updated to Pending.');
     ELSE
         INSERT INTO Bookings(
@@ -752,10 +664,8 @@ BEGIN
             p_price,
             'Confirmed'
         );
-
         DBMS_OUTPUT.PUT_LINE('Seat assigned and booking confirmed.');
     END IF;
-
     COMMIT;
     EXCEPTION
         WHEN OTHERS THEN
@@ -763,7 +673,6 @@ BEGIN
             RAISE;
 END;
 /
-
 BEGIN
     Seat_And_Confirm_Booking(
         p_passenger_id => 2,
@@ -773,19 +682,14 @@ BEGIN
         p_price => 450
         );
 END;
-
 UPDATE Flights
 SET 
     Departure_date = date '2025-12-19',
     Arrival_date = date '2025-12-19'
 WHERE Flight_Id = 'DL2002'; 
-
-
 SELECT * FROM BOOKINGS WHERE FLIGHT_ID = 'DL2002';
 SELECT * FROM FLIGHTS ;
-
 -- 2> Function to calculate final fare with class modifiers and tax.
-
 CREATE OR REPLACE FUNCTION Final_Fare (
     base_price IN bookings.price%type,
     travel_class IN bookings.class%type
@@ -801,14 +705,12 @@ BEGIN
         WHEN 'First Class' THEN modifier := 1.5;
         ELSE modifier := 1.0; 
     END CASE;
-
     -- Apply modifier and tax
     final_price_after_tax := (base_price * modifier) * (1 + tax_rate);
 
     RETURN final_price_after_tax;
 END Final_Fare;
 /
-
 DECLARE
  base_price bookings.price%type := &base_price;
  Class bookings.class%type := '&Class';
@@ -817,14 +719,11 @@ BEGIN
     Output := Final_Fare(base_price, Class);
     dbms_output.put_line('Price after modifier and tax is: ' || Output);
 END;
-
-
 --3> Procedure to process check-in and baggage assignment.
 CREATE OR REPLACE PROCEDURE PROCESS_CHECK_IN_AND_BAGGAGE(
     p_passenger_id   IN Passengers.Passenger_ID%TYPE,
     p_flight_id      IN Flights.Flight_id%type,
     p_baggage_weight IN Check_In.Baggage_Weight%TYPE
-
 )
 IS
     e_passenger_exists  NUMBER;
@@ -834,28 +733,22 @@ BEGIN
     SELECT COUNT(*) INTO e_flight_exists
     FROM Flights
     WHERE Flight_ID = p_flight_id;
-
     IF e_flight_exists = 0 THEN
         RAISE_APPLICATION_ERROR(-20001, 'Flight ID not found.');
     END IF;
-
     SELECT COUNT(*) INTO e_passenger_exists
     FROM Passengers
     WHERE Passenger_ID = p_passenger_id;
-
     IF e_passenger_exists = 0 THEN
         RAISE_APPLICATION_ERROR(-20002, 'Passenger ID not found.');
     END IF;
-
     SELECT COUNT(*) INTO e_already_checked_in
     FROM Check_In
     WHERE Passenger_ID = p_passenger_id
       AND Flight_ID = p_flight_id;
-
     IF e_already_checked_in > 0 THEN
         RAISE_APPLICATION_ERROR(-20003, 'Passenger already checked in for this flight.');
     END IF;
-
     INSERT INTO Check_In (
         Passenger_ID,
         Flight_ID,
@@ -867,7 +760,6 @@ BEGIN
         SYSTIMESTAMP,
         p_baggage_weight
     );
-
     DBMS_OUTPUT.PUT_LINE('Check-in completed for Passenger ' || p_passenger_id || 
                          '. Baggage is assigned for weight: ' || p_baggage_weight || ' kg.');
     COMMIT;
@@ -877,20 +769,13 @@ EXCEPTION
         RAISE;
 END;
 /
-
-
 BEGIN
     PROCESS_CHECK_IN_AND_BAGGAGE(
         p_passenger_id   => 22,          
         p_flight_id      => 'WN4004',      
         p_baggage_weight => 36         
     );
-END;
-/
--- =========================================================================================
-
--- TRIGGERS
-
+END;-- TRIGGERS
 -- 1>Trigger to prevent double-booking of a seat.
 CREATE OR REPLACE TRIGGER Prevent_Seat_Double_Booking
 BEFORE INSERT ON Bookings
@@ -901,35 +786,14 @@ BEGIN
     SELECT COUNT(*) INTO seat_count
     FROM Bookings
     WHERE Seat_No = :NEW.Seat_No AND Flight_ID = :NEW.Flight_ID;
-
     IF seat_count > 0 THEN
         RAISE_APPLICATION_ERROR(-20009, 'Seat already booked.');
     END IF;
 END;
---output
--- Trigger PREVENT_SEAT_DOUBLE_BOOKING compiled
-
--- Elapsed: 00:00:00.022
-
-
 INSERT INTO Bookings (Passenger_id, Flight_id, Booking_Date, Seat_No, Class, Price, Status)
 VALUES (1, 'AA1001', SYSDATE, '15A', 'Economy', 400, 'Confirmed');
--- output
--- 1 row inserted.
-
--- Elapsed: 00:00:00.018
 INSERT INTO Bookings (Passenger_id, Flight_id, Booking_Date, Seat_No, Class, Price, Status)
 VALUES (2, 'AA1001', SYSDATE, '12A', 'Economy', 450, 'Confirmed');
--- output
--- ORA-20009: Seat already booked.
--- ORA-06512: at "SQL_OTSY0WRYNPGJSEFJTM9F5B2DUB.PREVENT_SEAT_DOUBLE_BOOKING", line 9
--- ORA-04088: error during execution of trigger 'SQL_OTSY0WRYNPGJSEFJTM9F5B2DUB.PREVENT_SEAT_DOUBLE_BOOKING'
-
--- https://docs.oracle.com/error-help/db/ora-21000/
--- Error at Line: 4 Column: 0
----------------------------------------------------------------------------------------------------------------
-
-
 -- 2>Trigger to update flight status based on time or cancellations.
     CREATE OR REPLACE TRIGGER Update_Flight_Status
 BEFORE UPDATE ON Flights
@@ -943,37 +807,23 @@ BEGIN
         :NEW.Flight_Status := 'Departed';
     END IF;
 END;
--- Output
--- Trigger UPDATE_FLIGHT_STATUS compiled
-
--- Elapsed: 00:00:00.023
-
-
--- Test the trigger
-
 UPDATE Flights
 SET Departure_Date = SYSDATE - 1
 WHERE Flight_ID = 'AA1001';
 SELECT Flight_Status FROM Flights WHERE Flight_ID = 'AA1001';
--- "FLIGHT_STATUS"
--- "Departed"
-
 --3>Trigger to log payment failures with reasons.
 CREATE TABLE Payment_Error_Codes (
     Error_Code VARCHAR2(10) PRIMARY KEY,
     Description VARCHAR2(100) NOT NULL
 );
-
 -- Sample error codes
 INSERT INTO Payment_Error_Codes VALUES ('DECLINE', 'Card Declined');
 INSERT INTO Payment_Error_Codes VALUES ('NET_ERR', 'Network Error');
 INSERT INTO Payment_Error_Codes VALUES ('INS_FUN', 'Insufficient Funds');
 INSERT INTO Payment_Error_Codes VALUES ('EXP_CARD', 'Expired Card');
 INSERT INTO Payment_Error_Codes VALUES ('GEN_ERR', 'General Payment Error');
-
 ALTER TABLE Payments
 ADD Failure_Code VARCHAR2(10);
-
 -- table for logs
 CREATE TABLE Payment_Fail_Log (
     Log_ID NUMBER GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
@@ -981,7 +831,6 @@ CREATE TABLE Payment_Fail_Log (
     Reason VARCHAR2(100),
     Log_Date TIMESTAMP
 );
-
 CREATE OR REPLACE TRIGGER Log_Payment_Failure
 AFTER INSERT OR UPDATE ON Payments
 FOR EACH ROW
@@ -993,7 +842,6 @@ BEGIN
     SELECT Description INTO error_msg
     FROM Payment_Error_Codes
     WHERE Error_Code = :NEW.Failure_Code;
-
     -- Insert into failure log
     INSERT INTO Payment_Fail_Log (Booking_ID, Reason, Log_Date)
     VALUES (:NEW.Booking_ID, error_msg, SYSTIMESTAMP);
@@ -1002,7 +850,6 @@ EXCEPTION
         INSERT INTO Payment_Fail_Log (Booking_ID, Reason, Log_Date)
         VALUES (:NEW.Booking_ID, 'Unknown failure reason', SYSTIMESTAMP);
 END;
-
 -- Alter constraints to add failure to status in payment
 SELECT uc.constraint_name,
        uc.constraint_type,
@@ -1028,10 +875,7 @@ SELECT * FROM Payment_Fail_Log ;
 --output
 -- "LOG_ID","BOOKING_ID","REASON","LOG_DATE"
 -- 1,3,"Insufficient Funds","2025-07-11T07:22:06.923798Z"
-
-
 -- Main Performance Optimization
-
 --1> Indexes on Passenger_ID, Flight_ID, Booking_Date.
 create INDEX index_passenger_id on passengers (passenger_id);
 create INDEX index_passenger_id on Bookings (passenger_id);
@@ -1039,10 +883,6 @@ create INDEX index_flight_id on Flights(flight_id);
 create INDEX index_flight_id on Bookings(flight_id);
 create INDEX index_flight_id on Flights(flight_id);
 create INDEX index_booking_date on Bookings (booking_date);
-
-
-
-
 --2>Use EXPLAIN PLAN to analyze and improve slow queries.
 --1> List all confirmed bookings for a given passenger.
 Explain PLAN FOR
@@ -1057,10 +897,8 @@ Explain PLAN FOR
   Booking_Date
 FROM Bookings
 WHERE Status = 'Confirmed' AND Passenger_ID = 5;
-
 SELECT * FROM TABLE(DBMS_XPLAN.DISPLAY);
 --2> Show flight schedules with available seats per route.
-
 EXPLAIN PLAN FOR
 SELECT 
     F.Flight_ID,
@@ -1091,9 +929,7 @@ GROUP BY
     F.Departure_Date, F.Arrival_Date, AC.Model, AC.Capacity
 ORDER BY 
     F.Departure_Date;
-
 select * from TABLE(DBMS_XPLAN.DISPLAY);
-
 --OPTIMIZE USING CTE
 EXPLAIN PLAN FOR
 WITH ConfirmedSeatCounts AS (
@@ -1123,11 +959,8 @@ JOIN Airlines A ON F.Airline_ID = A.Airline_ID
 JOIN Aircrafts AC ON F.Aircraft_ID = AC.Aircraft_ID
 LEFT JOIN ConfirmedSeatCounts CSC ON F.Flight_ID = CSC.Flight_ID
 ORDER BY F.Departure_Date;
-
-
 select * from TABLE(DBMS_XPLAN.DISPLAY);
 -- “By isolating confirmed seat counts into a CTE and joining it with aggregated capacity data, we reduced query complexity and minimized redundant full table scans. The optimizer now produces an adaptive plan with lower CPU cost. Further improvement is achievable with a composite index on Bookings(Flight_ID, Status), which would enable an index-driven aggregation.”
-
 --3> Identify flights that have been cancelled or delayed.
 EXPLAIN PLAN FOR
 SELECT 
@@ -1145,8 +978,6 @@ WHERE
 ORDER BY 
     Departure_Date;
 select * from TABLE(DBMS_XPLAN.DISPLAY);
-
-
 --4 Retrieve staff hired in the past year sorted by department.
 EXPLAIN PLAN FOR
 SELECT 
@@ -1164,9 +995,6 @@ WHERE
 ORDER BY 
     D.Name;
 select * from TABLE(DBMS_XPLAN.DISPLAY);
-
-
-
 --5 Show passengers who haven't checked in for upcoming flights.
 EXPLAIN PLAN FOR
 SELECT 
@@ -1189,9 +1017,7 @@ WHERE
     AND B.Status = 'Confirmed'
 ORDER BY 
     F.Departure_Date;
-
 select * from TABLE(DBMS_XPLAN.DISPLAY);
-
 --OPTIMIZE USING CTE
 EXPLAIN PLAN FOR
 WITH ConfirmedBookings AS (
@@ -1222,10 +1048,7 @@ FROM UncheckedPassengers UP
 JOIN Passengers P ON P.Passenger_Id = UP.Passenger_Id
 JOIN Flights F ON F.Flight_ID = UP.Flight_ID
 ORDER BY F.Departure_Date;
-
 select * from TABLE(DBMS_XPLAN.DISPLAY);
-
-
 --6 Find top 5 busiest airports based on departure frequency.
 EXPLAIN PLAN FOR
 SELECT 
@@ -1238,8 +1061,6 @@ GROUP BY
 ORDER BY 
     Departure_Count DESC
 FETCH FIRST 5 ROWS ONLY; 
-
-
 --OPTIMIZE USING MATERALIZED VIEW
 CREATE MATERIALIZED VIEW TopDepartureAirports 
 BUILD IMMEDIATE
@@ -1248,15 +1069,11 @@ AS
 SELECT Departure_Airport, COUNT(*) AS Departure_Count
 FROM Flights
 GROUP BY Departure_Airport;
-
 EXPLAIN PLAN FOR
 SELECT * FROM TopDepartureAirports
 ORDER BY Departure_Count DESC
 FETCH FIRST 5 ROWS ONLY;
-
 select * from TABLE(DBMS_XPLAN.DISPLAY);
-
-
 --7 Display payment summary for a given month (total revenue, mode distribution).
 EXPLAIN PLAN FOR
 SELECT 
@@ -1272,10 +1089,7 @@ WHERE
     AND Status = 'Confirmed'
 GROUP BY 
     TO_CHAR(Payment_Date, 'YYYY-MM');
-
-    
 select * from TABLE(DBMS_XPLAN.DISPLAY);
-
 --8 List aircrafts used most frequently across all flights.
 EXPLAIN PLAN
 SELECT 
@@ -1291,10 +1105,7 @@ GROUP BY
     F.Aircraft_ID, A.Model, A.Manufacturer
 ORDER BY 
     Usage_Count DESC;
-
 select * from TABLE(DBMS_XPLAN.DISPLAY);
-
-
 --9 Retrieve bookings where the payment is still pending.
 EXPLAIN PLAN FOR
 SELECT 
@@ -1345,7 +1156,6 @@ HAVING
     COUNT(B.Booking_ID) > AC.Capacity
 ORDER BY 
     Excess_Passengers DESC;
-
 Select * from TABLE(DBMS_XPLAN.DISPLAY);
 --OPTIMIZE QUERY USING CTE
 EXPLAIN PLAN FOR
@@ -1368,19 +1178,9 @@ JOIN Aircrafts AC ON F.Aircraft_ID = AC.Aircraft_ID
 JOIN ConfirmedBookings CB ON F.Flight_ID = CB.Flight_ID
 WHERE CB.Confirmed_Passengers > AC.Capacity
 ORDER BY Excess_Passengers DESC;
-
-
 Select * from TABLE(DBMS_XPLAN.DISPLAY);
-
-
-
-
-
 --3> Partition tables such as Flights and Payments by year or route.
 -- Done in creation of table
-
-
-
 --4> Create materialized views for monthly flight summaries.
 CREATE MATERIALIZED VIEW Monthly_Flight_Summary
 BUILD IMMEDIATE
@@ -1396,15 +1196,10 @@ FROM
     JOIN Bookings b ON f.Flight_Id = b.Flight_Id
 GROUP BY 
     f.Flight_Id, TO_CHAR(f.Departure_date, 'YYYY-MM');
-
 select * from Monthly_Flight_Summary;
-
 select * from flights;
-
-
--- Bonus Challenges
 -- Create a view that displays detailed booking info 
--- including flight route, airline name, passenger contact, and seat details.
+-- including flight rute, airline name, passenger contact, and seat details.
 
 CREATE VIEW Booking_info AS 
 SELECT 
